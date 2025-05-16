@@ -3,13 +3,13 @@
     "value": "eastus"
   },
   "appServiceName": {
-    "value": "myappservice123"
+    "value": "sapkotaappservices"
   },
   "appServicePlanName": {
-    "value": "myappserviceplan"
+    "value": "sapkotaappservicesplan"
   },
   "appInsightsName": {
-    "value": "myappinsights"
+    "value": "sapkotaappinsights"
   },
   "postgresServerName": {
     "value": "mypostgresflexibleserver"
