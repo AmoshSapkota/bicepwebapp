@@ -1,0 +1,23 @@
+{
+  "location": {
+    "value": "eastus"
+  },
+  "appServiceName": {
+    "value": "sapkotaappservices"
+  },
+  "appServicePlanName": {
+    "value": "sapkotaappservicesplan"
+  },
+  "appInsightsName": {
+    "value": "sapkotaappinsights"
+  },
+  "postgresServerName": {
+    "value": "mypostgresflexibleserver"
+  },
+  "postgresAdminPassword": {
+    "value": "YourSecurePassword123!"
+  },
+  "postgresDbName": {
+    "value": "mydatabase"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "location": {
+    "value": "eastus"
+  },
+  "appServiceName": {
+    "value": "myappservice123"
+  },
+  "appServicePlanName": {
+    "value": "myappserviceplan"
+  },
+  "appInsightsName": {
+    "value": "myappinsights"
+  },
+  "postgresServerName": {
+    "value": "mypostgresflexibleserver"
+  },
+  "postgresAdminPassword": {
+    "value": "YourSecurePassword123!"
+  },
+  "postgresDbName": {
+    "value": "mydatabase"
+  }
+}
