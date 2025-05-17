@@ -25,10 +25,6 @@ jobs:
       run: ./mvnw clean package -DskipTests
       working-directory: springboot-app
 
-    - name: Build with Maven (with Tests)
-      run: ./mvnw clean package
-      working-directory: springboot-app
-
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
