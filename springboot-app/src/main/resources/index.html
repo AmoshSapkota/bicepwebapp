@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #0078d4;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #005a9e;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Management</h1>
+        
+        <div id="messageArea"></div>
+        
+        <div class="form-group">
+            <label for="userName">User Name:</label>
+            <input type="text" id="userName" placeholder="Enter user name">
+        </div>
+        
+        <button id="createUser">Create User</button>
+        <button id="loadUsers">Load All Users</button>
+        
+        <div id="userList">
+            <h2>Users</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <!-- Users will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const apiBaseUrl = window.location.origin; // Will work when deployed together
+            const messageArea = document.getElementById('messageArea');
+            
+            // Show message function
+            function showMessage(message, type) {
+                messageArea.innerHTML = `<div class="message ${type}">${message}</div>`;
+                setTimeout(() => {
+                    messageArea.innerHTML = '';
+                }, 5000);
+            }
+            
+            // Load all users
+            document.getElementById('loadUsers').addEventListener('click', function() {
+                fetch(`${apiBaseUrl}/users`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to load users');
+                        }
+                        return response.json();
+                    })
+                    .then(users => {
+                        const tableBody = document.getElementById('userTableBody');
+                        tableBody.innerHTML = '';
+                        
+                        if (users.length === 0) {
+                            showMessage('No users found.', 'info');
+                        } else {
+                            users.forEach(user => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>${user.id}</td>
+                                    <td>${user.name}</td>
+                                `;
+                                tableBody.appendChild(row);
+                            });
+                            showMessage('Users loaded successfully!', 'success');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showMessage('Error loading users: ' + error.message, 'error');
+                    });
+            });
+            
+            // Create new user
+            document.getElementById('createUser').addEventListener('click', function() {
+                const userName = document.getElementById('userName').value.trim();
+                
+                if (!userName) {
+                    showMessage('Please enter a user name', 'error');
+                    return;
+                }
+                
+                fetch(`${apiBaseUrl}/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: userName })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to create user');
+                    }
+                    return response.json();
+                })
+                .then(newUser => {
+                    document.getElementById('userName').value = '';
+                    showMessage(`User "${newUser.name}" created successfully!`, 'success');
+                    
+                    // Reload user list
+                    document.getElementById('loadUsers').click();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showMessage('Error creating user: ' + error.message, 'error');
+                });
+            });
+            
+            // Load users on page load
+            document.getElementById('loadUsers').click();
+        });
+    </script>
+</body>
+</html>
