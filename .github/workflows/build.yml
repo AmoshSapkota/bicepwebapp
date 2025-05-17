@@ -17,14 +17,15 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
-    - name: Build with Maven
-      run: ./mvnw clean package -DskipTests
-
 
     - name: Make mvnw executable
       run: chmod +x springboot-app/mvnw
 
     - name: Build with Maven
+      run: ./mvnw clean package -DskipTests
+      working-directory: springboot-app
+
+    - name: Build with Maven (with Tests)
       run: ./mvnw clean package
       working-directory: springboot-app
 
