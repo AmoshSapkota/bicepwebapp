@@ -22,7 +22,8 @@ jobs:
       run: chmod +x springboot-app/mvnw
 
     - name: Build with Maven
-      run: ./mvnw clean package --file springboot-app/pom.xml
+      run: ./mvnw clean package
+      working-directory: springboot-app
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
